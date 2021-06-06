@@ -2,22 +2,22 @@
   "stats": [
     {
       "id": "01",
-      "title": "Students:",
+      "title": "students",
       "amount": 1537
     },
     {
       "id": "02",
-      "title": "Courses:",
+      "title": "courses",
       "amount": 24
     },
     {
       "id": "03",
-      "title": "Instructors:",
+      "title": "instructors",
       "amount": 36
     },
     {
       "id": "04",
-      "title": "Events:",
+      "title": "events",
       "amount": 158
     }
   ],
