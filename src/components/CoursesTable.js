@@ -14,7 +14,7 @@ function CoursesTable({ id, title, open, price, dates }) {
       </td>
       <td>
         <Button color="info" onClick={() => history.push(`/courses/${id}`)}>
-          View More
+          View Details
         </Button>
       </td>
     </tr>

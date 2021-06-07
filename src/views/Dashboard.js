@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Jumbotron, Button, Table, Row, Col } from "reactstrap";
+import { Jumbotron, Button, Table, Row, Col, Badge } from "reactstrap";
 import CoursesTable from "../components/CoursesTable";
 import { fetchStats, fetchCourses } from "../api";
 import { useHistory } from "react-router-dom";
@@ -33,7 +33,8 @@ function Dashboard() {
             {stats.length > 0 &&
               stats.map(({ id, title, amount }) => (
                 <td key={id}>
-                  {title} {amount}
+                  {title}
+                  <Badge color="secondary">{amount}</Badge>
                 </td>
               ))}
           </tr>
@@ -58,7 +59,7 @@ function Dashboard() {
           ))}
         </tbody>
       </Table>
-      <Button color="primary" onClick={() => history.push("/courses")}>
+      <Button className="float-right" color="primary" onClick={() => history.push("/courses")}>
         View All Courses
       </Button>
     </div>

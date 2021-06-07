@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useRouteMatch } from "react-router-dom";
 import { fetchCourses, fetchInstructors } from "../api";
+import Instructor from "../components/Instructor";
 import { Button, Container, Row, Col } from "reactstrap";
 
 const Course = () => {
   const match = useRouteMatch().params.id;
-  console.log(match);
-
   const [courses, setCourses] = useState([]);
   const [instructors, setInstructors] = useState([]);
 
@@ -29,6 +28,7 @@ const Course = () => {
         title: course.title,
         imagePath: course.imagePath,
         start_date: course.dates.start_date,
+        end_date: course.dates.start_date,
         normalPrice: course.price.normal,
         earlyBirdPrice: course.price.early_bird,
         duration: course.duration,
@@ -39,20 +39,22 @@ const Course = () => {
     }
   });
 
-  let instructorInfo = {};
+  let instructorInfo = [];
   instructors.forEach((instructor) => {
-    if (instructor.id == courseInfo.instructors) {
-      instructorInfo = {
-        id: instructor.id,
-        gender: instructor.gender,
-        firstName: instructor.name.first,
-        lastName: instructor.name.last,
-        email: instructor.email,
-        dob: instructor.dob,
-        bio: instructor.bio,
-        linkedin: instructor.linkedin,
-      };
-    }
+    courseInfo.instructors.forEach((person, i) => {
+      if (instructor.id == person) {
+        instructorInfo[i] = {
+          id: instructor.id,
+          gender: instructor.gender,
+          firstName: instructor.name.first,
+          lastName: instructor.name.last,
+          email: instructor.email,
+          dob: instructor.dob,
+          bio: instructor.bio,
+          linkedin: instructor.linkedin,
+        };
+      }
+    });
   });
 
   return (
@@ -79,13 +81,9 @@ const Course = () => {
         <Button color="danger">Delete</Button>
       </div>
       <h2>Instructors</h2>
-      <h3>
-        {instructorInfo.firstName} {instructorInfo.lastName} ({instructorInfo.dob})
-      </h3>
-      <div>
-        Email: {instructorInfo.email} | {instructorInfo.linkedin}
-      </div>
-      <div>{instructorInfo.bio}</div>
+      {instructorInfo.map((instructor) => (
+        <Instructor key={instructor.id} {...instructor} />
+      ))}
     </div>
   );
 };
