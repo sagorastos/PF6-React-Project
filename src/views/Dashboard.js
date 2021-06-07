@@ -46,6 +46,7 @@ function Dashboard() {
           <td></td>
           <td></td>
           <td></td>
+          <td></td>
         </tr>
         <tr>
           <th>Title</th>
@@ -57,11 +58,19 @@ function Dashboard() {
           {courses.map((data) => (
             <CoursesTable key={data.id} {...data} />
           ))}
+          <tr className="table-active">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+              <Button className="float-right" color="primary" onClick={() => history.push("/courses")}>
+                View All Courses
+              </Button>
+            </td>
+          </tr>
         </tbody>
       </Table>
-      <Button className="float-right" color="primary" onClick={() => history.push("/courses")}>
-        View All Courses
-      </Button>
     </div>
   );
 }
