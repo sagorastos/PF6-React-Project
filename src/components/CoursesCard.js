@@ -11,12 +11,12 @@ function CoursesCard({ id, title, open, price, dates, imagePath, duration }) {
           <CardTitle tag="h5">{title}</CardTitle>
           <CardImg top width="100%" src={imagePath} alt="Card image cap" />
           <CardText>
-            Price:{price.normal} | {open ? "✓" : "X"}$
+            Price: {price.normal}$ | {open ? "✓" : "X"}
             <br />
-            Duration:{duration} <br />
-            Dates:{dates.start_date} - {dates.end_date}
+            Duration: {duration} <br />
+            Dates: {dates.start_date} - {dates.end_date}
           </CardText>
-          <Button color="primary" onClick={() => history.push(`/courses/${id}`)}>
+          <Button className="float-right" color="primary" onClick={() => history.push(`/courses/${id}`)}>
             View
           </Button>
         </CardBody>
