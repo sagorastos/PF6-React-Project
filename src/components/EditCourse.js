@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FormGroup, Label, Input, FormText, Container, Jumbotron } from "reactstrap";
 import { Modal, Form, Button, Row, Col } from "react-bootstrap";
-import { addCourse } from "../api";
+import { useRouteMatch } from "react-router-dom";
+import { addCourse, fetchCourse, updateCourse } from "../api";
 
 const AddCourse = () => {
+  const match = useRouteMatch().params.id;
+
   const [title, setTitle] = useState("");
   const [duration, setDuration] = useState("");
   const [imagepath, setImagePath] = useState("");
@@ -15,10 +18,43 @@ const AddCourse = () => {
   const [earlybird, setEarlyBird] = useState("");
   const [normalprice, setNormalPrice] = useState("");
 
+  useEffect(() => {
+    const fetchCourseData = async () => {
+      const responseCourse = await fetchCourse(match);
+      setTitle(responseCourse.title);
+      setDuration(responseCourse.duration);
+      setImagePath(responseCourse.imagePath);
+      setBookable(responseCourse.open);
+
+      let instructorsKeys = Object.keys(instructors);
+      responseCourse.instructors.forEach((instructor, i) => {
+        if (instructor === instructorsKeys[0]) {
+          setInstructors((instructors) => ({
+            ...instructors,
+            [instructorsKeys[0]]: true,
+          }));
+        }
+        if (instructor === instructorsKeys[1]) {
+          setInstructors((instructors) => ({
+            ...instructors,
+            [instructorsKeys[1]]: true,
+          }));
+        }
+      });
+
+      setDescription(responseCourse.description);
+      setStartDate(responseCourse.dates.start_date);
+      setEndDate(responseCourse.dates.end_date);
+      setEarlyBird(responseCourse.price.early_bird);
+      setNormalPrice(responseCourse.price.normal);
+    };
+
+    fetchCourseData();
+  }, []);
+
   const onInputChange = (event, setState) => {
     const name = event.target.name;
     const value = event.target.type === "checkbox" ? event.target.checked : event.target.value;
-
     if (name === "instructors") {
       setState((instructors) => ({
         ...instructors,
@@ -30,6 +66,7 @@ const AddCourse = () => {
   };
   const modifyCourseData = async () => {
     const data = {
+      id: match,
       title: title,
       imagePath: imagepath,
       price: {
@@ -50,12 +87,12 @@ const AddCourse = () => {
       }, []),
       description: description,
     };
-    await addCourse(data);
+    await updateCourse(data);
   };
 
   return (
     <Jumbotron>
-      <h1>Add Course</h1>
+      <h1>Edit Course</h1>
       <Form>
         <Form.Group key={"title"} controlId={"title"}>
           <Label for="title">Title:</Label>
@@ -89,7 +126,7 @@ const AddCourse = () => {
         </Form.Group>
         <Form.Group>
           <Label check>
-            <Input type="checkbox" name="bookable" value={bookable} onChange={(e) => onInputChange(e, setBookable)} />
+            <Input type="checkbox" name="bookable" checked={bookable} onChange={(e) => onInputChange(e, setBookable)} />
             Bookable
           </Label>
         </Form.Group>
@@ -178,7 +215,7 @@ const AddCourse = () => {
       </Form>
 
       <Button variant="primary" className="float-right" onClick={modifyCourseData}>
-        Add Course
+        Edit Course
       </Button>
     </Jumbotron>
   );

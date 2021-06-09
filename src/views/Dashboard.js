@@ -55,7 +55,7 @@ function Dashboard() {
           <th>Date</th>
         </tr>
         <tbody>
-          {courses.map((data) => (
+          {courses.slice(Math.max(courses.length - 5, 0)).map((data, i) => (
             <CoursesTable key={data.id} {...data} />
           ))}
           <tr className="table-active">

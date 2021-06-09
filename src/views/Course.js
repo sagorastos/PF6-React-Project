@@ -3,11 +3,13 @@ import { useRouteMatch } from "react-router-dom";
 import { deleteCourse, fetchCourses, fetchInstructors } from "../api";
 import Instructor from "../components/Instructor";
 import { Button, Container, Row, Col } from "reactstrap";
+import { useHistory } from "react-router-dom";
 
-const Course = () => {
+function Course() {
   const match = useRouteMatch().params.id;
   const [courses, setCourses] = useState([]);
   const [instructors, setInstructors] = useState([]);
+  const history = useHistory();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,8 +79,12 @@ const Course = () => {
       </Container>
       <div dangerouslySetInnerHTML={{ __html: courseInfo.description }} className="m-4"></div>
       <div>
-        <Button color="primary">Edit</Button>
-        <Button color="danger" onClick={() => deleteCourse(courseInfo.id)}>Delete</Button>
+        <Button color="primary" onClick={() => history.push(`/courses/${courseInfo.id}/edit`)}>
+          Edit
+        </Button>
+        <Button color="danger" onClick={() => deleteCourse(courseInfo.id)}>
+          Delete
+        </Button>
       </div>
       <h2>Instructors</h2>
       {instructorInfo.map((instructor) => (
@@ -86,6 +92,6 @@ const Course = () => {
       ))}
     </div>
   );
-};
+}
 
 export default Course;
