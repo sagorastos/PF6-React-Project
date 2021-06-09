@@ -1,7 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import {
-  Button,
-  Form,
   FormGroup,
   Label,
   Input,
@@ -9,93 +7,207 @@ import {
   Container,
   Jumbotron,
 } from "reactstrap";
+import { Modal, Form, Button, Row, Col } from "react-bootstrap";
+import { addCourse } from "../api";
 
 const AddCourse = () => {
+  const [title, setTitle] = useState("");
+  const [duration, setDuration] = useState("");
+  const [imagepath, setImagePath] = useState("");
+  const [bookable, setBookable] = useState("");
+  const [instructors, setInstructors] = useState({ "01": false, "02": false });
+  const [description, setDescription] = useState("");
+  const [startdate, setStartDate] = useState("");
+  const [enddate, setEndDate] = useState("");
+  const [earlybird, setEarlyBird] = useState("");
+  const [normalprice, setNormalPrice] = useState("");
+
+  const onInputChange = (event, setState) => {
+    const name = event.target.name;
+    const value =
+      event.target.type === "checkbox"
+        ? event.target.checked
+        : event.target.value;
+
+    if (name === "instructors") {
+      setState((instructors) => ({
+        ...instructors,
+        [event.target.value]: value,
+      }));
+    } else {
+      setState(value);
+    }
+  };
+  const modifyCourseData = async () => {
+    const data = {
+      "title": title,
+      "imagePath": imagepath,
+      "price": {
+        "normal": normalprice,
+        "early_bird": earlybird
+      },
+      "dates": {
+        "start_date": startdate,
+        "end_date": enddate
+      },
+      "duration": duration,
+      "open": bookable,
+      "instructors": 
+        Object.keys(instructors).reduce((acc, key) => {
+          if(instructors[key]) {
+            acc.push(key)
+          }
+          return acc
+        }, [])
+      ,
+      "description": description
+    }
+    console.log(data)
+    await addCourse(data)
+  }
+  // const addCourse = (data) => {
+
+  // };
+  console.log(instructors);
+
   return (
     <Jumbotron>
       <h1>Add Course</h1>
       <Form>
-        <FormGroup>
+        <Form.Group key={"title"} controlId={"title"}>
           <Label for="title">Title:</Label>
-          <Input type="text" name="title" id="title" placeholder="Title" />
-        </FormGroup>
-        <FormGroup>
+          <Form.Control
+            type="text"
+            placeholder="Title"
+            value={title}
+            name="title"
+            onChange={(e) => onInputChange(e, setTitle)}
+          />
+        </Form.Group>
+        <Form.Group>
           <Label for="Duration">Duration:</Label>
-          <Input
+          <Form.Control
             type="text"
-            name="duration"
-            id="duration"
             placeholder="Duration"
+            value={duration}
+            name="duration"
+            onChange={(e) => onInputChange(e, setDuration)}
           />
-        </FormGroup>
-        <FormGroup>
+        </Form.Group>
+        <Form.Group>
           <Label for="ImagePath">Image Path:</Label>
-          <Input
+          <Form.Control
             type="text"
-            name="imagePath"
-            id="imagePath"
             placeholder="Image Path"
+            value={imagepath}
+            name="imagepath"
+            onChange={(e) => onInputChange(e, setImagePath)}
           />
-        </FormGroup>
-        <FormGroup check>
+        </Form.Group>
+        <Form.Group>
           <Label check>
-            <Input type="checkbox" /> Bookable
+            <Input
+              type="checkbox"
+              name="bookable"
+              value={bookable}
+              onChange={(e) => onInputChange(e, setBookable)}
+            />
+            Bookable
           </Label>
-        </FormGroup>
+        </Form.Group>
         <hr className="my-2" />
         <h2>Instructors</h2>
-        <FormGroup check>
+        <Form.Group check>
           <Label check>
-            <Input type="checkbox" /> John Tsevdos
+            <Input
+              type="checkbox"
+              name="instructors"
+              onChange={(e) => onInputChange(e, setInstructors)}
+              checked={instructors["01"]}
+              value="01"
+            />{" "}
+            John Tsevdos
           </Label>
-        </FormGroup>
-        <FormGroup check>
+        </Form.Group>
+        <Form.Group check>
           <Label check>
-            <Input type="checkbox" /> Yiannis Nikolakopoulos
+            <Input
+              type="checkbox"
+              name="instructors"
+              onChange={(e) => onInputChange(e, setInstructors)}
+              checked={instructors["02"]}
+              value="02"
+            />
+            Yiannis Nikolakopoulos
           </Label>
-        </FormGroup>
+        </Form.Group>
         <hr className="my-2" />
-        <FormGroup>
+        <Form.Group>
           <Label for="description">Description:</Label>
-          <Input type="textarea" name="description" id="description" />
-        </FormGroup>
+          <Input
+            type="textarea"
+            placeholder="Description"
+            value={description}
+            name="description"
+            onChange={(e) => onInputChange(e, setDescription)}
+          />
+        </Form.Group>
         <hr className="my-2" />
         <h2>Dates</h2>
-        <FormGroup>
+        <Form.Group>
           <Label for="startDate">Start date:</Label>
           <Input
             type="text"
             name="startDate"
-            id="startDate"
+            value={startdate}
             placeholder="Start date"
+            onChange={(e) => onInputChange(e, setStartDate)}
           />
-        </FormGroup>
-        <FormGroup>
+        </Form.Group>
+        <Form.Group>
           <Label for="endDate">End date:</Label>
           <Input
             type="text"
             name="endDate"
-            id="endDate"
+            value={enddate}
+            onChange={(e) => onInputChange(e, setEndDate)}
             placeholder="End date"
           />
-        </FormGroup>
+        </Form.Group>
         <hr className="my-2" />
         <h2>Price</h2>
-        <FormGroup>
+        <Form.Group>
           <Label for="Early Bird">Early Bird:</Label>
-          <Input type="number" name="earlyBird" id="earlyBird" placeholder="0" />
-        </FormGroup>
-        <FormGroup>
+          <Input
+            type="number"
+            name="earlyBird"
+            value={earlybird}
+            placeholder="0"
+            onChange={(e) => onInputChange(e, setEarlyBird)}
+          />
+        </Form.Group>
+        <Form.Group>
           <Label for="Normal price">Normal price:</Label>
           <Input
             type="number"
             name="normalPrice"
-            id="normalPrice"
+            value={normalprice}
             placeholder="0"
+            onChange={(e) => onInputChange(e, setNormalPrice)}
           />
-        </FormGroup>
+        </Form.Group>
         <hr className="my-2" />
       </Form>
+
+      <Button
+        variant="primary"
+        className="float-right"
+        onClick={
+          modifyCourseData
+        }
+      >
+        Add Course
+      </Button>
     </Jumbotron>
   );
 };

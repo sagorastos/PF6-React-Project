@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouteMatch } from "react-router-dom";
-import { fetchCourses, fetchInstructors } from "../api";
+import { deleteCourse, fetchCourses, fetchInstructors } from "../api";
 import Instructor from "../components/Instructor";
 import { Button, Container, Row, Col } from "reactstrap";
 
@@ -78,7 +78,7 @@ const Course = () => {
       <div dangerouslySetInnerHTML={{ __html: courseInfo.description }} className="m-4"></div>
       <div>
         <Button color="primary">Edit</Button>
-        <Button color="danger">Delete</Button>
+        <Button color="danger" onClick={() => deleteCourse(courseInfo.id)}>Delete</Button>
       </div>
       <h2>Instructors</h2>
       {instructorInfo.map((instructor) => (

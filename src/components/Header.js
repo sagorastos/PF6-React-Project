@@ -11,8 +11,10 @@ import {
   NavbarText
 } from 'reactstrap';
 
+
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  
 
   const toggle = () => setIsOpen(!isOpen);
 
