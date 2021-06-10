@@ -3,9 +3,11 @@ import { FormGroup, Label, Input, FormText, Container, Jumbotron } from "reactst
 import { Modal, Form, Button, Row, Col } from "react-bootstrap";
 import { useRouteMatch } from "react-router-dom";
 import { addCourse, fetchCourse, updateCourse } from "../api";
+import { useHistory } from "react-router-dom";
 
-const AddCourse = () => {
+function EditCourse() {
   const match = useRouteMatch().params.id;
+  const history = useHistory();
 
   const [title, setTitle] = useState("");
   const [duration, setDuration] = useState("");
@@ -214,11 +216,18 @@ const AddCourse = () => {
         <hr className="my-2" />
       </Form>
 
-      <Button variant="primary" className="float-right" onClick={modifyCourseData}>
+      <Button
+        variant="primary"
+        className="float-right"
+        onClick={() => {
+          modifyCourseData();
+          history.push(`/courses/${match}`);
+        }}
+      >
         Edit Course
       </Button>
     </Jumbotron>
   );
-};
+}
 
-export default AddCourse;
+export default EditCourse;

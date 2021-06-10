@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { FormGroup, Label, Input, FormText, Container, Jumbotron } from "reactstrap";
 import { Modal, Form, Button, Row, Col } from "react-bootstrap";
 import { addCourse } from "../api";
+import { useHistory } from "react-router-dom";
 
-const AddCourse = () => {
+function AddCourse() {
   const [title, setTitle] = useState("");
   const [duration, setDuration] = useState("");
   const [imagepath, setImagePath] = useState("");
@@ -14,6 +15,7 @@ const AddCourse = () => {
   const [enddate, setEndDate] = useState("");
   const [earlybird, setEarlyBird] = useState("");
   const [normalprice, setNormalPrice] = useState("");
+  const history = useHistory();
 
   const onInputChange = (event, setState) => {
     const name = event.target.name;
@@ -177,11 +179,18 @@ const AddCourse = () => {
         <hr className="my-2" />
       </Form>
 
-      <Button variant="primary" className="float-right" onClick={modifyCourseData}>
+      <Button
+        variant="primary"
+        className="float-right"
+        onClick={() => {
+          modifyCourseData();
+          history.push("/");
+        }}
+      >
         Add Course
       </Button>
     </Jumbotron>
   );
-};
+}
 
 export default AddCourse;

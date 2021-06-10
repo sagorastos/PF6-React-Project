@@ -82,7 +82,13 @@ function Course() {
         <Button color="primary" onClick={() => history.push(`/courses/${courseInfo.id}/edit`)}>
           Edit
         </Button>
-        <Button color="danger" onClick={() => deleteCourse(courseInfo.id)}>
+        <Button
+          color="danger"
+          onClick={() => {
+            deleteCourse(courseInfo.id);
+            history.push("/");
+          }}
+        >
           Delete
         </Button>
       </div>
