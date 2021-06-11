@@ -66,7 +66,7 @@ function Course() {
       <Container className="themed-container m-4" fluid={true}>
         <Row>
           <Col xs="auto">
-            <div>Price: {courseInfo.normalPrice}$</div>
+            <div>Price: {courseInfo.normalPrice}€</div>
             <div>Bookable: {courseInfo.open ? "✓" : "X"}</div>
           </Col>
           <Col xs="auto">
